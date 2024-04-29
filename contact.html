@@ -1,0 +1,198 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unser Team</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Kaushan+Script");
+      body {
+        text-align: center;
+        font-family: cursive;
+        background-color: #f4f4f4;
+      }
+      .our-team-head {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+      .our-team-head h1 {
+        font-family: "Kaushan Script", cursive;
+        margin-top: 15%;
+        text-align: left;
+        width: 37%;
+        padding-left: 2%;
+        font-size: 60pt;
+        color: #333;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1),
+          0 3px 5px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1),
+          0 10px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .our-team-support-image {
+        top: 5%;
+        left: 23%;
+        height: 400px;
+        width: 15%;
+        position: absolute;
+        margin-top: 100px;
+        margin-left: 100px;
+        -ms-transform: skew(-30deg, 0deg);
+        -webkit-transform: skew(-30deg, 0deg);
+        transform: skew(-30deg, 0deg);
+        overflow: hidden;
+      }
+
+      .our-team-support-image-inner {
+        position: absolute;
+        left: -230px;
+        width: 660px;
+        height: 500px;
+        -ms-transform: skew(30deg, 0deg);
+        -webkit-transform: skew(30deg, 0deg);
+        transform: skew(30deg, 0deg);
+        background-image: url(https://www.itprotoday.com/sites/itprotoday.com/files/remote-it-support.jpg);
+        background-size: cover;
+      }
+
+      .our-team-design-image {
+        top: 5%;
+        left: 43%;
+        height: 400px;
+        width: 15%;
+        position: absolute;
+        margin-top: 100px;
+        margin-left: 100px;
+        -ms-transform: skew(-30deg, 0deg);
+        -webkit-transform: skew(-30deg, 0deg);
+        transform: skew(-30deg, 0deg);
+        overflow: hidden;
+      }
+
+      .our-team-design-image-inner {
+        position: absolute;
+        left: -240px;
+        top: -10px;
+        width: 660px;
+        height: 500px;
+        -ms-transform: skew(30deg, 0deg);
+        -webkit-transform: skew(30deg, 0deg);
+        transform: skew(30deg, 0deg);
+        background-image: url(https://uxstudioteam.com/ux-blog/wp-content/uploads/2017/07/Distraction-Is-a-Designer-Drug.-You-Are-an-Addict-Too-720x480.jpg);
+        background-size: cover;
+      }
+
+      .our-team-developer-image {
+        top: 5%;
+        left: 63%;
+        height: 400px;
+        width: 15%;
+        position: absolute;
+        margin-top: 100px;
+        margin-left: 100px;
+        -ms-transform: skew(-30deg, 0deg);
+        -webkit-transform: skew(-30deg, 0deg);
+        transform: skew(-30deg, 0deg);
+        overflow: hidden;
+      }
+      .our-team-support-image-inner::after,
+      .our-team-design-image-inner::after,
+      .our-team-developer-image-inner::after {
+        content: "";
+        transition: all 0.5s linear;
+      }
+      .our-team-developer-image-inner {
+        position: absolute;
+        left: -220px;
+        width: 660px;
+        height: 500px;
+        -ms-transform: skew(30deg, 0deg);
+        -webkit-transform: skew(30deg, 0deg);
+        transform: skew(30deg, 0deg);
+        background-image: url(https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&h=650&w=940);
+        background-size: cover;
+      }
+      .our-team-support-image:hover .our-team-support-image-inner::after {
+        display: block;
+        position: relative;
+        background: #000;
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+        content: "";
+      }
+      .our-team-support-image:hover .content-details {
+        color: #fff;
+        position: absolute;
+        transform: skewX(30deg);
+        top: 25%;
+        margin-left: 40px;
+      }
+
+      .our-team-design-image:hover .our-team-design-image-inner::after {
+        display: block;
+        position: relative;
+        background: #000;
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+        content: "";
+      }
+      .our-team-design-image:hover .content-details {
+        color: #fff;
+        position: absolute;
+        transform: skewX(30deg);
+        top: 25%;
+        margin-left: 40px;
+      }
+
+      .our-team-developer-image:hover .our-team-developer-image-inner::after {
+        display: block;
+        position: relative;
+        background: #000;
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+        content: "";
+      }
+      .our-team-developer-image:hover .content-details {
+        color: #fff;
+        position: absolute;
+        transform: skewX(30deg);
+        top: 25%;
+        margin-left: 40px;
+      }
+    </style>
+  </head>
+  <body>
+   
+    <div class="our-team-inner">
+      <div class="our-team-head">
+        <h1>Unser Team</h1>
+        <div class="our-team-support-image">
+          <div class="our-team-support-image-inner"></div>
+          <div class="content-details fadeIn-top">
+            <h3>Support</h3>
+            <p>Christoph Stens</p>
+          
+          </div>
+        </div>
+        <div class="our-team-design-image">
+          <div class="our-team-design-image-inner"></div>
+          <div class="content-details fadeIn-top">
+            <p style="margin-left: 50px;"><h3>Designers</h3></p>
+            <p>Sonja Lasar</p>
+            <p>Zekiye Öztürk</p>
+          </div>
+        </div>
+        <div class="our-team-developer-image">
+          <div class="our-team-developer-image-inner"></div>
+          <div class="content-details fadeIn-top">
+            <h3><b>Developers</b></h3>
+            <p>Kadir Gülec</p>
+            <p>Yavuz Gürdal</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

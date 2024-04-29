@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bruttolohn Rechner</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        -webkit-box-shadow: 5px 5px 10px #f0f1f4, -5px -5px 10px #f2f3f5;
+        -moz-box-shadow: 5px 5px 10px#f0f1f4, -5px -5px 10px #f2f3f5;
+        box-shadow: 5px 5px 10px #f0f1f4, -5px -5px 10px #f2f3f5;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        color: black;
+        background: #b5c6dc;
+        cursor: pointer;
+  border-radius: 10px;
+  font-size: 15px;
+  padding: 5px 15px;
+  border: none;
+  box-shadow: 5px 5px 10px #e5e7f0, -5px -5px 10px #f2f3f5;
+      }
+
+      input[type="submit"]:hover {
+        background-color: hsl(212, 86%, 64%);
+      }
+
+      #ergebnis {
+        color: rgb(1, 29, 155);
+        padding: 20px 0px;
+        border: none;
+        border-radius: 4px;
+        margin-top: 1rem;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .homepage-link {
+  display: block; /* Make the link behave like a block element */
+  margin: 0 auto; /* Set top and bottom margins to 0, and auto-center horizontally */
+  text-align: center; /* Center the text within the link */
+}
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Bruttolohn Rechner</h1>
+      <form id="bruttoForm">
+        <div class="form-group">
+          <label for="brutto">Bruttogehalt (in Euro)</label>
+          <input type="number" id="brutto" name="brutto" min="0" required />
+        </div>
+        <div class="form-group">
+          <label for="vermoegenswirksame"
+            >Vermögenswirksame Leistungen (in Euro)</label
+          >
+          <input
+            type="number"
+            id="vermoegenswirksame"
+            name="vermoegenswirksame"
+            min="0"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="kinder">Anzahl der Kinder</label>
+          <input type="number" id="kinder" name="kinder" min="0" required />
+        </div>
+        <input type="submit" value="Berechnen" />
+      </form>
+      <!-- <div class="form-group">
+            <label for="api">Api</label>
+            <input type="text" id="api" name="api" min="0">
+        </div> -->
+      <div id="ergebnis"></div>
+    </div>
+    <a href="index.html" class="homepage-link">Homepage</a>
+
+
+    <script>
+      var data;
+      fetch("https://lohnrechner.onrender.com/data")
+        .then((response) => response.json())
+        .then((responseData) => {
+          data = responseData[0]; // Global değişkene atama
+          // console.log(data); // Veriyi konsola yazdır
+        })
+        .catch((error) => {
+          console.error("Hata oluştu:", error);
+        });
+
+      function sozialversicherung(
+        bruttoUndVeroegenswirksame,
+        versicherungProzent,
+        beitragsbemGrenze
+      ) {
+        var monatlichBeitragsGrenze = beitragsbemGrenze / 12;
+
+        if (bruttoUndVeroegenswirksame > monatlichBeitragsGrenze) {
+          return monatlichBeitragsGrenze * versicherungProzent;
+        } else {
+          return bruttoUndVeroegenswirksame * versicherungProzent;
+        }
+      }
+
+      function jahresSteuerRechnen(
+        steuerBrutto,
+        jahresBrutto,
+        grenzenArray,
+        formelWerteArray
+      ) {
+        jahresBrutto = jahresBrutto * 12;
+        if (steuerBrutto < grenzenArray[1] / 12) {
+          return 0;
+        } else if (steuerBrutto < grenzenArray[2] / 12) {
+          var y1 = formelWerteArray.y1;
+          var y2 = formelWerteArray.y2;
+          var y = (Math.round(jahresBrutto) - (grenzenArray[1] - 1)) / 10000;
+          return Math.round(((y1 * y + y2) * y) / 12);
+        } else if (steuerBrutto < grenzenArray[3] / 12) {
+          var z1 = formelWerteArray.z1;
+          var z2 = formelWerteArray.z2;
+          var z3 = formelWerteArray.z3;
+          var z = (Math.round(jahresBrutto) - (grenzenArray[2] - 1)) / 10000;
+          console.log(z);
+          return Math.round(((z1 * z + z2) * z + z3) / 12);
+        } else if (steuerBrutto < grenzenArray[4] / 12) {
+          var x1 = formelWerteArray.x1;
+          var x2 = formelWerteArray.x2;
+          var x = Math.round(jahresBrutto);
+          console.log("grenze4");
+          return Math.round((x1 * x - x2) / 12);
+        } else {
+          var h1 = formelWerteArray.h1;
+          var h2 = formelWerteArray.h2;
+          var h = Math.round(jahresBrutto);
+          return Math.round((h1 * h - h2) / 12);
+        }
+      }
+
+      document
+        .getElementById("bruttoForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var brutto = parseFloat(document.getElementById("brutto").value);
+          var vermoegenswirksame = parseFloat(
+            document.getElementById("vermoegenswirksame").value
+          );
+          var kinder = parseInt(document.getElementById("kinder").value);
+          var bruttoUndVeroegenswirksame = brutto + vermoegenswirksame;
+
+          // console.log(vermoegenswirksame);
+          //Sozialversicherungen rechnen
+          var krankenversicherung = sozialversicherung(
+            bruttoUndVeroegenswirksame,
+            data.sozialversicherungProzent[0].krankenversicherung,
+            data.beitragsbemessungsgrenzen[0].krankenversicherung
+          );
+          var rentenversicherung = sozialversicherung(
+            bruttoUndVeroegenswirksame,
+            data.sozialversicherungProzent[0].rentenversicherung,
+            data.beitragsbemessungsgrenzen[0].rentenversicherung
+          );
+          var arbeitslosenversicherung = sozialversicherung(
+            bruttoUndVeroegenswirksame,
+            data.sozialversicherungProzent[0].arbeitslosenversicherung,
+            data.beitragsbemessungsgrenzen[0].arbeitslosenversicherung
+          );
+          if (kinder > 0) {
+            var pflegeversicherung = sozialversicherung(
+              bruttoUndVeroegenswirksame,
+              data.sozialversicherungProzent[0].plfegeversicherungWithChild,
+              data.beitragsbemessungsgrenzen[0].pflegeversicherung
+            );
+          } else {
+            var pflegeversicherung = sozialversicherung(
+              bruttoUndVeroegenswirksame,
+              data.sozialversicherungProzent[0].plfegeversicherungNoChild,
+              data.beitragsbemessungsgrenzen[0].pflegeversicherung
+            );
+          }
+
+          var summeSozialversicherungen =
+            krankenversicherung +
+            pflegeversicherung +
+            rentenversicherung +
+            arbeitslosenversicherung;
+          //ende sozialversicherungen rechnen
+          var steuerBrutto =
+            bruttoUndVeroegenswirksame - summeSozialversicherungen;
+          //lohnsteuer rechnen
+          var lohnsteuer = jahresSteuerRechnen(
+            steuerBrutto,
+            bruttoUndVeroegenswirksame,
+            data.jahresBruttoGrenzen[0],
+            data.formelWerte[0]
+          );
+
+          //solidaritätzuschlag und kirchensteuer rechnen
+          if (
+            lohnsteuer <
+            data.beitragsbemessungsgrenzen[0].solidaritaetszuschlag / 12
+          ) {
+            var solidaritaetzuschlage = 0;
+          } else if (
+            lohnsteuer <
+            data.beitragsbemessungsgrenzen[0].vollerSoLi / 12
+          ) {
+            var solidaritaetzuschlage =
+              (lohnsteuer -
+                data.beitragsbemessungsgrenzen[0].solidaritaetszuschlag / 12) *
+              data.sozialversicherungProzent[0].solidaritaetszuschlagHighRate;
+          } else {
+            var solidaritaetzuschlage =
+              lohnsteuer *
+              data.sozialversicherungProzent[0].solidaritaetszuschlagLowRate;
+          }
+          var kirchensteuer =
+            lohnsteuer * data.sozialversicherungProzent[0].kirchensteuer;
+          console.log(solidaritaetzuschlage);
+          var nettogehalt =
+            brutto +
+            vermoegenswirksame -
+            summeSozialversicherungen -
+            lohnsteuer -
+            solidaritaetzuschlage -
+            kirchensteuer;
+
+          document.getElementById("ergebnis").innerHTML =
+            "<div>Nettogehalt = " + nettogehalt.toFixed(2) + " Euro </div>";
+          document.getElementById("ergebnis").innerHTML +=
+            "<div>Sozialversicherungen = " +
+            summeSozialversicherungen.toFixed(2) +
+            " Euro </div>";
+          document.getElementById("ergebnis").innerHTML +=
+            "<div>Lohnsteuer = " + lohnsteuer.toFixed(2) + " Euro </div>";
+          document.getElementById("ergebnis").innerHTML +=
+            "<div>Solidaritätszuschlag = " +
+            solidaritaetzuschlage.toFixed(2) +
+            " Euro </div>";
+          document.getElementById("ergebnis").innerHTML +=
+            "<div>Kirchensteuer = " + kirchensteuer.toFixed(2) + " Euro </div>";
+        });
+    </script>
+  </body>
+</html>
